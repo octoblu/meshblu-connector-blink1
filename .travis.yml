@@ -36,8 +36,8 @@ before_install:
 install:
 - npm install --build-from-source
 script:
-- if [ "$TRAVIS_OS_NAME" == "linux" ]; SKIP_HID_TESTS=true npm test; fi
-- if [ "$TRAVIS_OS_NAME" != "linux" ]; npm test; fi
+- if [ "$TRAVIS_OS_NAME" == "linux" ]; then SKIP_HID_TESTS=true npm test; fi
+- if [ "$TRAVIS_OS_NAME" != "linux" ]; then npm test; fi
 before_deploy:
 - npm install --build-from-source --production
 - npm install meshblu-connector-packager
