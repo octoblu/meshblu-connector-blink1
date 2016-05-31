@@ -1,0 +1,60 @@
+language: cpp
+os:
+- linux
+- osx
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+    - g++-4.8-multilib
+    - gcc-multilib
+    - build-essential
+    - libbluetooth-dev
+    - libudev-dev
+    - libusb-1.0-0-dev
+env:
+  matrix:
+  - PACKAGER_NODE_VERSION="5.5" PACKAGER_ARCH="amd64" MAIN_BUILD="true"
+  - PACKAGER_NODE_VERSION="5.5" PACKAGER_ARCH="386"
+matrix:
+  exclude:
+  - os: osx
+    env: PACKAGER_NODE_VERSION="5.5" PACKAGER_ARCH="386"
+branches:
+  only:
+  - "/^v[0-9]/"
+before_install:
+- PACKAGER_URL="https://meshblu-connector.octoblu.com/tools/packager/latest"
+- curl -fsS "${PACKAGER_URL}/travis_install_node.sh" -o /tmp/travis_install_node.sh
+- chmod +x /tmp/travis_install_node.sh
+- ". /tmp/travis_install_node.sh"
+- if [ "$TRAVIS_OS_NAME" == "linux" -a "$MAIN_BUILD" == "true" ]; then export NPM_PUBLISH="true"; fi
+install:
+- npm install --build-from-source
+script:
+- npm test
+before_deploy:
+- npm install --build-from-source --production
+- npm install meshblu-connector-packager
+- npm dedupe
+- npm install -g flatten-packages
+- flatten-packages
+deploy:
+- provider: releases
+  api_key:
+    secure: "gdqVVpfVjxeZWN1KBjAvx2hCim3QSJOV2oPYDs9Cg9RSMsiHvLlnSEKI9H6UzFDYGrdVQKuIl3E+ORAzFdxMDsL5Z5SQ5oJcFCeQwQuM4PcyTuGFOxtiqC++g/xyQN4xVHZRjtgCTOkEm/CJotYK5ib7cXZ6NTurnCXhcp5ReTMaf0uJe4fap4Kqwl371862xY4DqzkUt2yZLssT9uEkSbyikioRZc5Vt7RdAHs+6Kr15txIlID8BwLo4Jgokhe0iRNou+0XaVWN5rR7Rck/DEnt1fozsFBo7K3Dtn3Ob34PInRKgEfAcBUJdGCUnsgP0IHykiaCCMODdT+4hZTgDIFFcb5FRo4KHReOd0/AEtSzj0bTKYcUdlQGPmqweCEjn+u9nojey3oFYlRT2raSuvONxUlcYbnvXUe3OVgCcwj9WWmDyN7xjND4Xvbns4uMjPYHDNHwqoUqTRgkvLPMl47L2avugPhNXCp252sX0ISvCpagKa1eg3wje0URzMabU1wfqxkQCMDzk8+7UiOE2qTfEfErWdrm2xTuybAA1nNRIt8yiBm729BVq30UCECEKU1jDzFwN0Q8vApvnmL3O07RnvoEINVc22eOwKzQWJocZhHzsajrKNn36Evd+Qq5x2zN6vD0BR+aIteSj2nv/jW0hAQ5ksEtCsHvBvzkAaI="
+  file_glob: true
+  file:
+  - "deploy/*"
+  skip_cleanup: true
+  on:
+    tags: true
+- provider: npm
+  email: serveradmin@octoblu.com
+  api_key:
+    secure: "IveDxr5OZPvvaCkwjL9KMJwJqjDRq/R+e5+9KNngDr6WBxCLzTb2n8G5X6JCVyByeN9ECN2KU0HJIaXii4sVzfl9/QC3HaSYVq2GnAEHnZkt9Xu03cYvnEx9X/YPh8qRL2kAaD8mtoB3un4b7ymS1YP/5UBDCZkdCCKdMCdRg7uXXeEuTwBh4c2J2H1ptYj2aW1eIUgfUFvfaOgopcAFf22mw8PjpMNL3jKJpE+I94xyFnMcSbzgUEMd7SVQOYv3bdjamGqMPE/lVu2hxFbbxXS3NKxycu3iJZ6XqGmnXL8MISOhzvp7pBFImui1CnyScklB4Kz5NE+UBOoZsDMAuUBhF7zpq41w5JVqajhGXGf7CvKtqWF2d2i4ggjQT9r1bMJkDT1vdWzlB+f0nQcsQ2U8Yc2C4YVxvU8dU3wyH3eRIUWLddQq7ua5LTy7x3BMR5b8/F/0hSR4r01aP/aLYgRFNwtztfmlmLyg+Mco8O0xekVq1cz/mG/QHl0OScXCuFEHjxaO5z1BDtdfmjUcablxbjuMFTXqDpzw3G3oNImXMfw3mhu3Ikstb765Wi8ip0c3P1Dpz4l8vxdjp4HRzE0m+d5nqrHLtojOa6grM6EMmJhPZD6gkWJYwnlKhGUujj9wz6c2cs4KH+34LqkcQcpXiYCitXl4g076BYm9zpY="
+  on:
+    tags: true
+    condition: "$NPM_PUBLISH = true"

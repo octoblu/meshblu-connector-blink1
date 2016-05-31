@@ -1,0 +1,25 @@
+{
+  "schemas": {
+    "version": "1.0.0",
+    "configure": {
+      "my-default-config": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    "message": {
+      "light-change": {
+        "type": "object",
+        "properties": {
+          "on": {
+            "type": "boolean"
+          },
+          "color":{
+            "type": "string"
+          }
+        },
+        "required": ["on", "color"]
+      }
+    }
+  }
+}
