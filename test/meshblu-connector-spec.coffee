@@ -1,5 +1,8 @@
 Blink1 = require '../'
 
+SKIP_HID_TESTS=process.env.SKIP_HID_TESTS
+SKIP_HID_TESTS=SKIP_HID_TESTS == 'true' || SKIP_HID_TESTS == true
+
 describe 'Blink1', ->
   beforeEach ->
     @sut = new Blink1
@@ -32,4 +35,5 @@ describe 'Blink1', ->
 
     describe 'when called with a message', ->
       it 'should not throw an error', ->
+        return expect('skipped').to.equal 'skipped' if SKIP_HID_TESTS
         expect(=> @sut.onMessage({ topic: 'hello', devices: ['123'] })).to.not.throw(Error)
