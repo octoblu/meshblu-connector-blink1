@@ -17,7 +17,7 @@ class Blink1Client
 
   updateColor: ({color}, callback) =>
     Blink1 = @getBlink1()
-    color = tinycolor.parse color
+    color = tinycolor color
     return @updateColorViaUSB {color, Blink1}, callback if Blink1?
     return @updateColorViaHttp {color}, callback unless Blink1?
 
@@ -31,12 +31,15 @@ class Blink1Client
       blink1 = new Blink1
       blink1.fadeToRGB 0, rgb.r, rgb.g, rgb.b
       blink1.close()
+      callback()
     catch error
       console.error 'Possible conflict with the blink1Control app, close it for better results'
       console.error error
       console.error 'trying over http'
-      @updateColorViaHttp {color}, callback
-      return
+      @updateColorViaHttp {color}, (httpError) =>
+        # if http also failed, send the original USB error message
+        return callback error if httpError?
+        callback httpError
 
     debug 'color changed! (USB)'
 
