@@ -1,28 +1,31 @@
 {EventEmitter}  = require 'events'
-Blink1Client    = require './blink1-client'
-tinycolor       = require 'tinycolor2'
 debug           = require('debug')('meshblu-connector-blink1:index')
+Blink1Client          = require './blink1-client'
 
-class Blink1 extends EventEmitter
+class Connector extends EventEmitter
   constructor: ->
-    @client = new Blink1Client
+    @blink1 = new Blink1Client
+
+  changeColor: ({color}, callback) =>
+    @blink1.updateColor {color}, callback
+
+  close: (callback) =>
+    debug 'on close'
+    callback()
 
   isOnline: (callback) =>
     callback null, running: true
 
-  parseColor: (payload={}) =>
-    return tinycolor 'black' unless payload.on
-    return tinycolor 'white' unless payload.color?
-    return tinycolor payload.color
+  onConfig: (device={}) =>
+    { @options } = device
+    debug 'on config', @options
 
-  onMessage: (message) =>
-    { payload, devices } = message
-    return if '*' in devices
-    debug 'on message'
-    @client.updateColor @parseColor payload
+  start: (device, callback) =>
+    debug 'started'
+    @onConfig device
+    callback()
 
-  start: (device) =>
-    { @uuid } = device
-    debug 'started', @uuid
+  turnOff: (callback) =>
+    @blink1.turnOff callback
 
-module.exports = Blink1
+module.exports = Connector

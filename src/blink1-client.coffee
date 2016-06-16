@@ -1,5 +1,6 @@
-request = require 'request'
-debug   = require('debug')('meshblu-connector-blink1:blink1')
+request   = require 'request'
+tinycolor = require 'tinycolor2'
+debug     = require('debug')('meshblu-connector-blink1:blink1')
 
 class Blink1Client
   constructor: ->
@@ -11,12 +12,16 @@ class Blink1Client
       console.error error
     return null
 
-  updateColor: (color) =>
-    Blink1 = @getBlink1()
-    return @updateColorViaUSB color, Blink1 if Blink1?
-    return @updateColorViaHttp color unless Blink1?
+  turnOff: (callback) =>
+    @updateColor color: 'black', callback
 
-  updateColorViaUSB: (color, Blink1) =>
+  updateColor: ({color}, callback) =>
+    Blink1 = @getBlink1()
+    color = tinycolor.parse color
+    return @updateColorViaUSB {color, Blink1}, callback if Blink1?
+    return @updateColorViaHttp {color}, callback unless Blink1?
+
+  updateColorViaUSB: ({color, Blink1}, callback) =>
     debug 'updating color via usb'
     rgb = color.toRgb();
     rgb.r = rgb.a * rgb.r
@@ -30,17 +35,24 @@ class Blink1Client
       console.error 'Possible conflict with the blink1Control app, close it for better results'
       console.error error
       console.error 'trying over http'
-      @updateColorViaHttp color
+      @updateColorViaHttp {color}, callback
       return
 
     debug 'color changed! (USB)'
 
-  updateColorViaHttp: (color) =>
+  updateColorViaHttp: ({color}, callback) =>
     debug 'updating color over http'
     rgb = color.toHexString()
     uri = 'http://127.0.0.1:8934/blink1/fadeToRGB'
     request.get uri, { qs: { rgb } }, (error, response, body) =>
-      return console.error error.message if error?
+      if error?
+        console.error error.message
+        callback error
+        return
+
+      return callback new Error 'Update Color via HTTP failed!' if response.statusCode >= 499
+
       debug 'color changed! (HTTP)'
+      callback()
 
 module.exports = Blink1Client

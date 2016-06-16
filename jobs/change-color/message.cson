@@ -1,0 +1,11 @@
+title: 'Change Color'
+type: 'object'
+properties:
+  data:
+    type: 'object'
+    properties:
+      color:
+        type: 'string'
+    required: [
+      'color'
+    ]
