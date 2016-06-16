@@ -1,10 +1,10 @@
 {EventEmitter}  = require 'events'
 debug           = require('debug')('meshblu-connector-blink1:index')
-Blink1Client          = require './blink1-client'
+Blink1Manager          = require './blink1-manager'
 
 class Connector extends EventEmitter
   constructor: ->
-    @blink1 = new Blink1Client
+    @blink1 = new Blink1Manager
 
   changeColor: ({color}, callback) =>
     @blink1.updateColor {color}, callback

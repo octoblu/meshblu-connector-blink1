@@ -1,6 +1,6 @@
 {
   "name": "meshblu-connector-blink1",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Meshblu Connector ",
   "homepage": "https://github.com/octoblu/meshblu-connector-blink1",
   "bugs": "https://github.com/octoblu/meshblu-connector-blink1/issues",
@@ -39,7 +39,7 @@
   },
   "meshbluConnector": {
     "githubSlug": "octoblu/meshblu-connector-blink1",
-    "schemasUrl": "https://file-downloader.octoblu.com/github-release/octoblu/meshblu-connector-blink1/v2.0.0/schemas.json"
+    "schemasUrl": "https://file-downloader.octoblu.com/github-release/octoblu/meshblu-connector-blink1/v2.0.2/schemas.json"
   },
   "platformDependencies": {
     "darwin": [],
