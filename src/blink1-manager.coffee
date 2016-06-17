@@ -2,7 +2,8 @@ request   = require 'request'
 tinycolor = require 'tinycolor2'
 debug     = require('debug')('meshblu-connector-blink1:blink1')
 try
-  Blink1 = require 'node-blink1'
+  unless process.env.SKIP_REQUIRE_BLINK1 == 'true'
+    Blink1 = require 'node-blink1'
 catch error
   console.error error
 
