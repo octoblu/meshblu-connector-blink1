@@ -1,4 +1,3 @@
-sudo: true
 language: cpp
 os:
 - linux
@@ -34,8 +33,11 @@ before_install:
 - if [ "$TRAVIS_OS_NAME" == "linux" -a "$MAIN_BUILD" == "true" ]; then export NPM_PUBLISH="true"; fi
 install:
 - npm install --build-from-source
+after_failure:
+- cat crash.log
+- cat npm-debug.log
 script:
-- npm test
+- npm run test-retry
 before_deploy:
 - npm prune --production
 - npm install meshblu-connector-packager
