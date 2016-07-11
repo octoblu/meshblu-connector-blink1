@@ -18,14 +18,18 @@ env:
   global:
   - DEBUG_CORE_DUMP="true"
   - SKIP_REQUIRE_BLINK1="true"
+  - PACKAGER_NODE_VERSION="5.5"
   matrix:
-  - PACKAGER_NODE_VERSION="5.5" PACKAGER_ARCH="amd64" MAIN_BUILD="true"
-  - PACKAGER_NODE_VERSION="5.5" PACKAGER_ARCH="386"
+    - PACKAGER_ARCH="amd64" MAIN_BUILD="true"
+    - PACKAGER_ARCH="386"
+    - PACKAGER_ARCH="arm"
 matrix:
   fast_finish: true
   exclude:
   - os: osx
-    env: PACKAGER_NODE_VERSION="5.5" PACKAGER_ARCH="386"
+    env: PACKAGER_ARCH="386"
+  - os: osx
+    env: PACKAGER_ARCH="arm"
 branches:
   only:
   - "/^v[0-9]/"
@@ -33,7 +37,8 @@ before_install:
 - ulimit -c unlimited -S
 - PACKAGER_URL="https://meshblu-connector.octoblu.com/tools/packager/latest"
 - curl -fsS "${PACKAGER_URL}/travis_install_node.sh" -o /tmp/travis_install_node.sh
-- chmod +x /tmp/travis_install_node.sh
+- curl -fsS "${PACKAGER_URL}/before_deploy.sh" -o /tmp/before_deploy.sh
+- chmod +x /tmp/travis_install_node.sh /tmp/before_deploy.sh
 - ". /tmp/travis_install_node.sh"
 - if [ "$TRAVIS_OS_NAME" == "linux" -a "$MAIN_BUILD" == "true" ]; then export NPM_PUBLISH="true"; fi
 install:
@@ -42,16 +47,9 @@ after_failure:
 - cat crash.log
 - cat npm-debug.log
 script:
-- npm test
+  - npm test
 before_deploy:
-- npm prune --production
-- npm install meshblu-connector-packager
-- npm dedupe
-- npm install -g flatten-packages
-- flatten-packages
-- npm run generate:package
-- npm run generate:schema
-- cp schemas.json deploy
+- ./tmp/before_deploy.sh "https://github.com/${GIT_SLUG}" "$GIT_TAG"
 deploy:
 - provider: releases
   api_key:
