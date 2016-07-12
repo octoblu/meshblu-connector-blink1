@@ -2,8 +2,6 @@ language: cpp
 os:
 - linux
 - osx
-services:
-- docker
 addons:
   apt:
     sources:
@@ -24,14 +22,11 @@ env:
   matrix:
     - PACKAGER_ARCH="amd64" MAIN_BUILD="true"
     - PACKAGER_ARCH="386"
-    - PACKAGER_ARCH="arm"
 matrix:
   fast_finish: true
   exclude:
   - os: osx
     env: PACKAGER_ARCH="386"
-  - os: osx
-    env: PACKAGER_ARCH="arm"
 branches:
   only:
   - "/^v[0-9]/"
