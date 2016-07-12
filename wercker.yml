@@ -7,14 +7,18 @@ build:
         name: compile
           # compile "https://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY" "$WERCKER_GIT_BRANCH"
         code: |
-          echo "WERCKER_GIT_BRANCH: $WERCKER_GIT_BRANCH"
-          compile "https://github.com/octoblu/meshblu-connector-blink1" "$WERCKER_GIT_BRANCH"
-          mv /export/app-linux-arm.tar.gz /export/blink1-linux-arm.tar.gz
-    - internal/store-container
+          compile "$WERCKER_SOURCE_DIR" "$WERCKER_OUTPUT_DIR"
+          mv "${WERCKER_OUTPUT_DIR}/app-linux-arm.tar.gz" "${WERCKER_OUTPUT_DIR}/blink1-linux-arm.tar.gz"
+          echo "$(git describe --tags)" > "${WERCKER_OUTPUT_DIR}/VERSION"
+    # - internal/store-container
 deploy:
   steps:
     - script:
         name: upload to github
         code: |
-          ls -l /export
-          github-release upload --repo octoblu/meshblu-connector-blink1 --tag "$WERCKER_GIT_BRANCH" --file /export/blink1-linux-arm.tar.gz
+          github-release upload \
+            --user octoblu \
+            --repo meshblu-connector-blink1 \
+            --tag "$(cat "${WERCKER_ROOT}/VERSION")" \
+            --name "blink1-linux-arm.tar.gz" \
+            --file "${WERCKER_ROOT}/blink1-linux-arm.tar.gz"
