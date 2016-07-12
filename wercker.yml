@@ -7,6 +7,7 @@ build:
         name: compile
           # compile "https://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY" "$WERCKER_GIT_BRANCH"
         code: |
+          git fetch
           compile "$WERCKER_SOURCE_DIR" "$WERCKER_OUTPUT_DIR"
           mv "${WERCKER_OUTPUT_DIR}/app-linux-arm.tar.gz" "${WERCKER_OUTPUT_DIR}/blink1-linux-arm.tar.gz"
           echo "$(git describe --tags)" > "${WERCKER_OUTPUT_DIR}/VERSION"
