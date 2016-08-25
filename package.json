@@ -1,6 +1,6 @@
 {
   "name": "meshblu-connector-blink1",
-  "version": "2.1.14",
+  "version": "2.1.15",
   "description": "Meshblu Connector ",
   "homepage": "https://github.com/octoblu/meshblu-connector-blink1",
   "bugs": "https://github.com/octoblu/meshblu-connector-blink1/issues",
@@ -34,7 +34,7 @@
     "eventemitter2": "^2.0.0",
     "fs-cson": "^0.3.2",
     "meshblu-config": "^4.0.0",
-    "meshblu-connector-runner": "^8.1.1",
+    "meshblu-connector-runner": "^9.1.2",
     "meshblu-connector-schema-generator": "^2.1.0",
     "node-blink1": "^0.2.2",
     "request": "^2.72.0",
