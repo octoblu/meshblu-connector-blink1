@@ -1,11 +1,14 @@
 # meshblu-connector-blink1
 
+[![Build Status](https://travis-ci.org/octoblu/meshblu-connector-blink1.svg?branch=master)](https://travis-ci.org/octoblu/meshblu-connector-blink1)
+[![Test Coverage](https://codecov.io/gh/octoblu/meshblu-connector-blink1/branch/master/graph/badge.svg)](https://codecov.io/gh/octoblu/meshblu-connector-blink1)
 [![Dependency status](http://img.shields.io/david/octoblu/meshblu-connector-blink1.svg?style=flat)](https://david-dm.org/octoblu/meshblu-connector-blink1)
 [![devDependency Status](http://img.shields.io/david/dev/octoblu/meshblu-connector-blink1.svg?style=flat)](https://david-dm.org/octoblu/meshblu-connector-blink1#info=devDependencies)
-[![Build Status](http://img.shields.io/travis/octoblu/meshblu-connector-blink1.svg?style=flat&branch=master)](https://travis-ci.org/octoblu/meshblu-connector-blink1)
 [![Slack Status](http://community-slack.octoblu.com/badge.svg)](http://community-slack.octoblu.com)
 
 [![NPM](https://nodei.co/npm/meshblu-connector-blink1.svg?style=flat)](https://npmjs.org/package/meshblu-connector-blink1)
+[![Dependency status](http://img.shields.io/david/octoblu/meshblu-connector-blink1.svg?style=flat)](https://david-dm.org/octoblu/meshblu-connector-blink1)
+
 
 ## Installing
 
