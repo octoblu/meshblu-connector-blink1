@@ -30,3 +30,4 @@ meshblu.json
 schemas.json
 .wercker
 secrets.env
+.nyc_output
