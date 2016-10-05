@@ -1,3 +1,10 @@
 title: "Default Configuration"
 type: "object"
-properties: {}
+properties:
+  desiredState:
+    title: "Desired State"
+    type: "object"
+    properties:
+      color:
+        title: "Color"
+        type: "string"
