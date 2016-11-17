@@ -7,7 +7,6 @@ class Connector extends EventEmitter
   constructor: ->
     @blink1 = new Blink1Manager
     @blink1.on 'update', (data) =>
-      console.log 'update', JSON.stringify data
       @emit 'update', data
 
   changeColor: ({color}, callback) =>
