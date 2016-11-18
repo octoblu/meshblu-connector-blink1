@@ -1201,9 +1201,9 @@ meshblu-config@^4.0.0:
     coffee-script "^1.9.2"
     lodash "^3.9.1"
 
-meshblu-connector-runner@^9.1.2:
-  version "9.4.1"
-  resolved "https://registry.yarnpkg.com/meshblu-connector-runner/-/meshblu-connector-runner-9.4.1.tgz#0b687231ebee268277611b42a0aec042e32a36e1"
+meshblu-connector-runner@^10.0.1:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/meshblu-connector-runner/-/meshblu-connector-runner-10.0.1.tgz#98793c6ff014ac5e299ac8f0be96d77352e68f1d"
   dependencies:
     async "^2.0.0-rc.6"
     bunyan "^1.8.1"
